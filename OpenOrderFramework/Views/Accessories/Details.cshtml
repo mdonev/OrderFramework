@@ -1,0 +1,50 @@
+﻿@model OpenOrderFramework.Models.Accessorie
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Details</title>
+</head>
+<body>
+    <div>
+        <h4>Accessorie</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.ketchup)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.ketchup)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.mayonnaise)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.mayonnaise)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.fries)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.fries)
+            </dd>
+    
+        </dl>
+    </div>
+    <p>
+        @Html.ActionLink("Edit", "Edit", new { id = Model.accID }) |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+</body>
+</html>

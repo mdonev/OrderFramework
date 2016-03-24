@@ -1,0 +1,53 @@
+﻿@model IEnumerable<OpenOrderFramework.Models.Accessorie>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    <p>
+        @Html.ActionLink("Create New", "Create")
+    </p>
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ketchup)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.mayonnaise)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.fries)
+            </th>
+            <th></th>
+        </tr>
+    
+    @foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ketchup)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.mayonnaise)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.fries)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id=item.accID }) |
+                @Html.ActionLink("Details", "Details", new { id=item.accID }) |
+                @Html.ActionLink("Delete", "Delete", new { id=item.accID })
+            </td>
+        </tr>
+    }
+    
+    </table>
+</body>
+</html>

@@ -1,0 +1,191 @@
+﻿@model PagedList.IPagedList<OpenOrderFramework.Models.Item>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+@{
+    ViewBag.Title = "Food";
+}
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+        // Document.ready -> link up remove event handler
+        $(".AddLink").click(function () {
+            // Get the id from the link
+            var recordToAdd = $(this).attr("data-id");
+            if (recordToAdd != '') {
+                // Perform the ajax post
+                $.post("/ShoppingCart/AddToCart", { "id": recordToAdd },
+                    function (data) {
+                        $('#cart-status').text(data.CartCount);
+                    });
+            }
+        });
+    });
+</script>
+
+<!-- Button trigger modal -->
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+    <div aria-hidden="true" class="alert alert-dismissable alert-success">
+        <button type="button" class="close" data-dismiss="alert">×</button>
+        <strong>An item was added to your cart.</strong> To check out now simply <a href="#" class="alert-link">click here</a>.
+    </div>
+
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">Confirm check out.</h4>
+            </div>
+            <div class="modal-body">
+                <p>Would you like to check out or keep shopping??</p>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Continue</button>
+                <button type="submit" class="btn btn-primary" onclick="location.href='@Url.Action("Index", "ShoppingCart")'">Check Out</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<h3>Order some good food.</h3>
+@if (Request.IsAuthenticated && User.IsInRole("Admin"))
+{
+    <p>
+        @Html.ActionLink("Create New", "Create")
+    </p>
+}
+<div class="bs-docs-section">
+    <div class="row">
+        @using (Html.BeginForm("Index", "Items", FormMethod.Get))
+        {
+
+            <div class="form-group">
+                <div class="input-group">
+                    @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { placeholder = "Find Product" })
+                    <span class="">
+                        <input type="submit" class="btn btn-default" value="Find" />
+                    </span>
+                </div>
+            </div>
+        }
+    </div>
+</div><hr />
+<style>
+    @@media screen and (min-width: 480px) {
+
+        .vertical {
+            border-left: 1px solid #d9d9d9;
+            height: 100%;
+            margin-left: 160px;
+        }
+        .vertical-right {
+            border-right: 1px solid #d9d9d9;
+            height: 100%;
+            padding-right: 60px;
+        }
+    }
+
+    @@media screen and (max-width:480px) {
+            .categories {
+               display:none;
+             }
+        .col-sm-4{
+            width:230px;
+        }
+    }
+
+    body {
+        background-image: url("/Content/fastfood.jpg");
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-color: white;
+        padding-right:150px;
+    }
+
+    
+
+    #SearchString {
+        width: 550px;
+        height: 34px;
+        border: 1.5px solid #cccccc;
+        border-radius: 5px;
+    }
+
+
+    img {
+        width: 250px;
+        height: 190px;
+    }
+
+    .paging {
+        margin-left: 30px;
+        color: black;
+    }
+</style>
+<div class="categories" style="float:left;margin-right:100px">
+    <h3>Sort By</h3>
+    @Html.ActionLink("Product Name", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
+    <br />
+    @Html.ActionLink("Product Price", "Index", new { sortOrder = ViewBag.PriceSortParm, currentFilter = ViewBag.CurrentFilter })
+    <h3>Categories</h3>
+    <a href="~/Items/Index">All Categories</a>
+    <br />
+    @Html.ActionLink("Food", "Index", new { sortOrder = ViewBag.CategoryFood, currentFilter = ViewBag.CurrentFilter })
+    <br/>
+    @Html.ActionLink("Drinks", "Index", new { sortOrder = ViewBag.CategoryDrinks, currentFilter = ViewBag.CurrentFilter })
+</div>
+<div class="vertical">
+    <div class="vertical-right">
+        @*==========================================================*@
+        <br>
+        <div class="container">
+            <div class="row">
+                @foreach (var item in Model)
+            {
+
+                    <div class="col-sm-4" style="border:1px solid #d9d9d9;margin:30px;background-color:white;box-shadow:#e6e6e6 10px 10px;">
+                        <h3>@Html.DisplayFor(modelItem => item.Catagorie.Name)</h3>
+                        <dl class="dl-horizontal">
+                            <img src="@Url.Action("RenderImage", new { id = item.ID})" />
+                        </dl>
+                        <h3>@Html.DisplayFor(modelItem => item.Name)</h3>
+                        <h3>@Html.DisplayFor(modelItem => item.Price)</h3>
+                        <div class="btn btn-default">
+                            <a href="#" class="AddLink"
+                               data-id="@item.ID" data-toggle="modal" data-target="#myModal">
+                                Add
+                                to cart
+                            </a>
+                        </div>
+
+                        <button class="btn btn-default">@Html.ActionLink("Details", "Details", new { id = item.ID })</button><br /><br />
+
+                        <button class="btn btn-default" style="display:none">@Html.ActionLink("Add to cart", "AddToCart", "ShoppingCart", new { id = item.ID }, new { htmlAttributes = new { @data_toggle = "modal", @data_target = "#myModal" } })</button>
+                        @if (Request.IsAuthenticated && User.IsInRole("Admin"))
+                {
+                            @Html.ActionLink("Edit", "Edit", new { id = item.ID })
+                            @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+        @*====================================================*@
+        <br />
+        <div class="paging">
+            Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+            @Html.PagedListPager(Model, page => Url.Action("Index",
+new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+        </div>
+    </div></div>

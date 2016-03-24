@@ -1,0 +1,75 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+<style>
+    body{
+        background-image: url("/Content/fastfood.jpg");
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-color: black;
+        }
+    .btnMine{
+        background-color:transparent;
+        border-radius:5px;
+        width:300px;
+        height:60px;
+        border:2px solid black;
+        font-size:x-large;
+       position:relative; 
+      margin-left:-150px;
+      left:50%;
+      bottom:10px;
+      color:black;
+    }
+    footer {
+        /*display:none;*/
+        margin-bottom:90px;
+    }
+    footer p{
+        display:none;
+    }
+  .a{
+      display:inline;
+  }
+  hr {
+      opacity:0;
+  }
+    
+</style>
+<hr />
+    <h1>Order Now</h1>
+<hr />
+<div class="a">
+    <p><strong><button type="button" class="btnMine" onclick="location.href='Items?sortOrder=category_food'">Order Some Food &raquo;</button></strong></p><hr />
+    <p><strong><button type="button" class="btnMine" onclick="location.href='Items?sortOrder=category_drinks'">Order Some Drink &raquo;</button></strong></p>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+       
+    </div>
+    <div class="col-md-4">
+        
+    </div>
+    <div class="col-md-4">
+        
+    </div>
+    <div class="col-md-4">
+
+    </div>
+    <div class="col-md-4">
+        
+    </div>
+    <div class="col-md-4">
+        
+    </div>
+    <div class="col-md-4">
+       
+    </div>
+    <div class="col-md-4">
+        
+    </div>
+
+
+
+</div>
